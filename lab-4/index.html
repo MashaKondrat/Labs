@@ -1,0 +1,76 @@
+<!doctype html>
+<html ng-app="purchaseApp">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<style>
+    body{
+        display: flex;
+        font-size: 1.8em;
+    }
+    .toBuy{
+        width: 40vw;
+        height: 100vh;
+    }
+    .bought{
+        width: 40vw;
+        height: 100vh;
+    }
+    .header{
+        font-size: 20px;
+        margin: 20px 10px;
+    }
+
+</style>
+</head>
+<body>
+    <div ng-controller="toBuy" class="toBuy" >
+        <div class="header">Купити</div>
+            <p ng-repeat="item in data.toBuy">
+                Купити: {{item.amount}} {{item.name}}
+                <button ng-click="buy(item.id)" class="btn btn-primary">Куплено</button>
+            </p>
+            <div ng-if="data.toBuy.length==0">
+                <p>Усе куплено</p>
+            </div>
+    </div>
+
+
+    <div ng-controller="bought" class="bought">
+        <div class="header">Куплено</div>
+        <p ng-repeat="item in data.bougth">
+            Куплено: {{item.amount}} {{item.name}}
+        </p>
+        <div ng-if="data.bougth.length==0">
+            <p> Ще нічого не куплено</p>
+        </div>
+       
+    </div>
+
+
+ 
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script>
+var model = {
+    toBuy: [
+        { name: "Яблук", amount: 10, id: 1},
+        { name: "Помідор", amount: 15, id: 2},
+        { name: "Вишень", amount: 30, id: 3},
+        { name: "Яйця", amount: 3, id: 4}
+    ],
+    bougth:[]
+};
+var purchaseApp = angular.module("purchaseApp", []);
+purchaseApp.controller("toBuy", function ($scope) {
+    $scope.data = model;
+    $scope.buy = function (id) {
+    $scope.data.bougth.push({...$scope.data.toBuy.find(item => item.id==id)})
+    $scope.data.toBuy.splice($scope.data.toBuy.indexOf($scope.data.toBuy.find(item => item.id==id)), 1)   
+    }
+});
+purchaseApp.controller("bought", function ($scope) {
+    $scope.data = model;
+});
+</script>
+</body>
+</html>
