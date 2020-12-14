@@ -1,0 +1,51 @@
+<!doctype html>
+<html ng-app="breakfastApp">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<style>
+    .panel{
+        text-align: center;
+        margin-top: 100px;
+    }
+</style>
+</head>
+<body ng-controller="breakfastController">
+
+    <div class="panel">
+        <h4> Введіть продукти (через кому) які ви вживаєте на сніданок </h4>
+        <textarea type="text" ng-model="text" col="40" row="20"></textarea> 
+        <br>
+        <p>
+        <button class="btn btn-primary" ng-click="split(text)" >
+            Чи не забагато?
+          </button>
+        </p>
+          {{msg}}      
+    </div>
+ 
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script>
+
+var breakfastApp = angular.module("breakfastApp", []);
+    breakfastApp.controller("breakfastController", function ($scope) {
+    $scope.split = function (text) {
+        let msg;
+        if(!text){
+            msg = "Будь ласка, уведіть дані!"
+        }else{
+            const arr = text.split(",").filter(element => element.trim()!="").map(element=> element.trim());
+            if(arr.length > 3){
+                msg = "Це забагато!"
+            }
+            else{
+                msg = "На здоров’я!"
+            }
+        }
+        $scope.text = ""
+        $scope.msg =  msg;
+    }
+});
+</script>
+</body>
+</html>
