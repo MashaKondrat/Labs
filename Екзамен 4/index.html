@@ -1,0 +1,69 @@
+﻿<!doctype html>
+<html ng-app="catalog">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <style>
+        body {
+            display: flex;
+            font-size: 1.9em;
+            padding-top: 50px;
+        }
+
+        .toBuy {
+            width: 45vw;
+            height: 50vh;
+            border: 3px #dedede dashed;
+            text-align: center;
+            margin: auto;
+        }
+
+        .header {
+            font-size: 20px;
+            margin: 20px 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div ng-controller="toBuy" class="toBuy">
+        <h1 class="header">Каталог автомобілів</h1>
+        <ol>
+            <li ng-repeat="item in data" ng-hide="item.hidden">
+                Наявно {{item.quantity}} автомобілів марки {{item.mark}}
+                <button ng-click="deleteMark(item.id)" class="btn btn-info">Видалити</button>
+                <button ng-click="hide(item.id)" class="btn btn-info">Приховати</button>
+            </li>
+        </ol>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script>
+        const buyApp = angular.module("catalog", []);
+        buyApp.service('catalogService', function () {
+            return {
+                data: [
+                    { mark: "Автомобіль №1", quantity: 6, id: 1, hidden: false },
+                    { mark: "Автомобіль №2", quantity: 15, id: 2, hidden: false },
+                    { mark: "Автомобіль №3", quantity: 1, id: 3, hidden: false },
+                    { mark: "Автомобіль №4", quantity: 3, id: 4, hidden: false },
+                    { mark: "Автомобіль №5", quantity: 30, id: 5, hidden: false },
+                    { mark: "Автомобіль №6", quantity: 2, id: 6, hidden: false },
+                    { mark: "Автомобіль №7", quantity: 5, id: 6, hidden: false }
+                ],
+            }
+        });
+        buyApp.controller("toBuy", function ($scope, catalogService) {
+            console.log({ catalogService });
+            $scope.data = catalogService.data;
+            $scope.deleteMark = function (id) {
+                $scope.data.splice($scope.data.indexOf($scope.data.find(item => item.id === id)), 1)
+            }
+            $scope.hide = function (id) {
+                $scope.data.find(item => item.id === id).hidden = true;
+            }
+        });
+    </script>
+</body>
+</html>
